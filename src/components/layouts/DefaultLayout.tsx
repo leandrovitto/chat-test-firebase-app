@@ -5,9 +5,11 @@ type Props = {};
 
 const DefaultLayout = (_props: Props) => {
   return (
-    <div className="border-4 border-blue-500 w-full">
+    <div className="w-full">
       <Navbar />
-      <Outlet />
+      <div className="p-4">
+        <Outlet />
+      </div>
     </div>
   );
 };

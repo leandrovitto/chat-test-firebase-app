@@ -38,6 +38,9 @@ export const UserMenu = () => {
           <DropdownMenuItem onClick={() => navigate("/dashboard")}>
             Dashboard
           </DropdownMenuItem>
+          <DropdownMenuItem onClick={() => navigate("/chat")}>
+            Chat
+          </DropdownMenuItem>
           <DropdownMenuItem onClick={handleLogout}>Logout</DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

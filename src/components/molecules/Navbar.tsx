@@ -15,6 +15,7 @@ import { UserMenu } from "./auth/UserMenu";
 const links = [
   { label: "Home", href: "/" },
   { label: "Dashboard (Private)", href: "/dashboard" },
+  { label: "Chat (Private)", href: "/chat" },
 ];
 
 const Navbar = () => {
@@ -22,14 +23,18 @@ const Navbar = () => {
   const { user } = useContext(AuthContext) as AuthContextType;
 
   return (
-    <div className="w-full flex justify-between items-center py-2 max-w-7xl mx-auto border-b border-gray-200">
+    <div className="w-full flex justify-between items-center p-2 max-w-7xl mx-auto border-b border-gray-200">
       <div
         onClick={() => {
           navigate("/");
         }}
         className="cursor-pointer"
       >
-        LOGO
+        <img
+          src="https://www.gstatic.com/mobilesdk/240501_mobilesdk/firebase_28dp.png"
+          alt="Logo"
+          className="h-8"
+        />
       </div>
       <ul className="hidden md:flex items-center gap-10 text-sm">
         {links.map((link, index) => (
