@@ -49,7 +49,7 @@ const Chat = () => {
         setMessages(m);
         setLoading(false);
       },
-      (e) => {
+      (_e) => {
         setLoading(false);
       }
     );

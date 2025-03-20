@@ -3,7 +3,7 @@ import { Input } from "@/components/ui/input";
 import { addMessage } from "@/lib/firebase/firestore/message.firestore";
 import { AuthContext, AuthContextType } from "@/provider/AuthProvider";
 import { SendIcon } from "lucide-react";
-import React, { FormEvent, use, useContext, useEffect, useState } from "react";
+import { FormEvent, useContext, useEffect, useState } from "react";
 
 interface ChatMessageInputProps {
   placeholder?: string;
