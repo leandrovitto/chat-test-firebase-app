@@ -6,9 +6,13 @@ const LoginWithGoogle = () => {
   const { handleLoginWithGoogle } = useContext(AuthContext) as AuthContextType;
 
   return (
-    <div>
-      <Button onClick={handleLoginWithGoogle}>Login with Google</Button>
-    </div>
+    <Button
+      variant="outline"
+      className="w-full"
+      onClick={handleLoginWithGoogle}
+    >
+      Login with Google
+    </Button>
   );
 };
 

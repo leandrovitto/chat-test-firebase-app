@@ -1,12 +1,31 @@
-import LoginWithGoogle from "@/components/molecules/auth/LoginWithGoogle";
+import { LoginForm } from "@/components/molecules/auth/LoginForm";
+import { Loader } from "@/components/molecules/Loader";
+import { AuthContext, AuthContextType } from "@/provider/AuthProvider";
+
+import { useContext, useEffect } from "react";
+import { useNavigate } from "react-router";
 
 type Props = {};
 
 const LoginPage = (_props: Props) => {
+  const navigate = useNavigate();
+  const { user, loading } = useContext(AuthContext) as AuthContextType;
+
+  if (loading) {
+    return <Loader />;
+  }
+
+  useEffect(() => {
+    if (user) {
+      navigate("/dashboard");
+    }
+  }, [user, navigate]);
+
   return (
-    <div>
-      LoginPage
-      <LoginWithGoogle />
+    <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">
+      <div className="w-full max-w-sm">
+        <LoginForm />
+      </div>
     </div>
   );
 };

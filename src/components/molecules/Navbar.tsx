@@ -76,7 +76,13 @@ const Navbar = () => {
                 </DropdownMenuItem>
               ))}
               <DropdownMenuItem>
-                <Button variant="secondary" className="w-full text-sm">
+                <Button
+                  onClick={() => {
+                    navigate("/login");
+                  }}
+                  variant="secondary"
+                  className="w-full text-sm"
+                >
                   Login
                 </Button>
               </DropdownMenuItem>
