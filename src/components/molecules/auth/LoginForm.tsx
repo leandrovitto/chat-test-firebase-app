@@ -1,4 +1,3 @@
-import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -9,6 +8,7 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { cn } from "@/lib/utils";
 import LoginWithGoogle from "./LoginWithGoogle";
 
 export function LoginForm({
@@ -47,12 +47,11 @@ export function LoginForm({
                     Forgot your password?
                   </a>
                 </div>
-                <Input disabled id="password" type="password" required />
+                <Input disabled id="password" type="text" required />
               </div>
               <Button disabled type="submit" className="w-full">
                 Login
               </Button>
-              <LoginWithGoogle />
             </div>
             <div className="mt-4 text-center text-sm">
               Don&apos;t have an account?{" "}
@@ -61,6 +60,10 @@ export function LoginForm({
               </a>
             </div>
           </form>
+          <div className="flex items-center justify-center mt-6 text-xs border-b border-gray-200 py-1 my-4">
+            or continue with
+          </div>
+          <LoginWithGoogle />
         </CardContent>
       </Card>
     </div>

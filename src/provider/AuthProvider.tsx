@@ -25,7 +25,6 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
   const onAuthStateChanged = () => {
     return firebaseAuth.onAuthStateChanged(
       (user: SetStateAction<UserInfo | null>) => {
-        console.log(user);
         if (user) {
           const u = user as UserInfo;
           const uid = u.uid;
@@ -34,6 +33,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
           setUser(user);
         } else {
           console.log("Not logged");
+          setUser(null);
         }
         setLoading(false);
       }

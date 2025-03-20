@@ -8,6 +8,9 @@ import { Menu } from "lucide-react";
 // import ThemeToggle from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router";
+import { AuthContext, AuthContextType } from "@/provider/AuthProvider";
+import { useContext } from "react";
+import { UserMenu } from "./auth/UserMenu";
 
 const links = [
   { label: "Home", href: "/" },
@@ -16,6 +19,7 @@ const links = [
 
 const Navbar = () => {
   const navigate = useNavigate();
+  const { user } = useContext(AuthContext) as AuthContextType;
 
   return (
     <div className="w-full flex justify-between items-center py-2 max-w-7xl mx-auto border-b border-gray-200">
@@ -43,16 +47,26 @@ const Navbar = () => {
       </ul>
 
       <div className="flex items-center">
-        <Button
-          onClick={() => {
-            navigate("/login");
-          }}
-          variant="secondary"
-          className="hidden md:block px-2"
-        >
-          Login
-        </Button>
-        <Button className="hidden md:block ml-2 mr-2">Get Started</Button>
+        {!user && (
+          <>
+            <Button
+              onClick={() => {
+                navigate("/login");
+              }}
+              variant="secondary"
+              className="hidden md:block px-2"
+            >
+              Login
+            </Button>
+            <Button className="hidden md:block ml-2 mr-2">Get Started</Button>
+          </>
+        )}
+
+        {user && (
+          <div className="hidden md:block">
+            <UserMenu />
+          </div>
+        )}
 
         <div className="flex md:hidden mr-2 items-center gap-2">
           <DropdownMenu>
@@ -75,20 +89,25 @@ const Navbar = () => {
                   </div>
                 </DropdownMenuItem>
               ))}
-              <DropdownMenuItem>
-                <Button
-                  onClick={() => {
-                    navigate("/login");
-                  }}
-                  variant="secondary"
-                  className="w-full text-sm"
-                >
-                  Login
-                </Button>
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Button className="w-full text-sm">Get Started</Button>
-              </DropdownMenuItem>
+
+              {!user && (
+                <>
+                  <DropdownMenuItem>
+                    <Button
+                      onClick={() => {
+                        navigate("/login");
+                      }}
+                      variant="secondary"
+                      className="w-full text-sm"
+                    >
+                      Login
+                    </Button>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <Button className="w-full text-sm">Get Started</Button>
+                  </DropdownMenuItem>
+                </>
+              )}
             </DropdownMenuContent>
           </DropdownMenu>
         </div>

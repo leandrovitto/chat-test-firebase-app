@@ -11,15 +11,15 @@ const LoginPage = (_props: Props) => {
   const navigate = useNavigate();
   const { user, loading } = useContext(AuthContext) as AuthContextType;
 
-  if (loading) {
-    return <Loader />;
-  }
-
   useEffect(() => {
     if (user) {
       navigate("/dashboard");
     }
   }, [user, navigate]);
+
+  if (loading) {
+    return <Loader />;
+  }
 
   return (
     <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">
