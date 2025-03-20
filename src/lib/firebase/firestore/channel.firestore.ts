@@ -84,3 +84,39 @@ export const getChannelById = async (channelId: string): Promise<Channel> => {
     throw new Error(`Channel not found with ID: ${channelId}`);
   }
 };
+
+/**
+ * Deletes a channel from the Firestore database.
+ *
+ *
+ * @param channelId - The ID of the channel to delete
+ * @param userId - The ID of the user deleting the channel
+ * @returns void
+ *
+ *
+ */
+export const deleteChannel = async (channelId: string, userId: string) => {
+  const ch = await firebase
+    .firestore()
+    .collection("channels")
+    .doc(channelId)
+    .get();
+  const rule = false; //ch.data()?.createdBy !== userId;
+
+  if (rule) {
+    console.log("You are not the owner of this channel");
+    return;
+  }
+  //remove all messages
+  await firebase
+    .firestore()
+    .collection("messages")
+    .where("channelId", "==", channelId)
+    .get()
+    .then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        doc.ref.delete();
+      });
+    });
+  await firebase.firestore().collection("channels").doc(channelId).delete();
+};

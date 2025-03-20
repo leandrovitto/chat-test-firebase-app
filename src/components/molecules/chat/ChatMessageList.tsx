@@ -24,7 +24,9 @@ const ChatMessageList = ({ messages }: ChatMessageListProps) => {
   if (messages.length === 0) {
     return (
       <FullMessageWrapped>
-        <div className="text-center">No messages</div>
+        <div className="text-center text-xs text-gray-500">
+          No messages yet. Start the conversation! 😊
+        </div>
       </FullMessageWrapped>
     );
   }

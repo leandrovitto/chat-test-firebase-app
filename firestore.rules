@@ -9,13 +9,15 @@ service cloud.firestore {
     match /messages/{messageID} {
       allow read: if signedInOrPublic();
       allow create: if signedInOrPublic();
-      allow update: if signedInOrPublic();
+      allow update: if signedInOrPublic() && request.auth.uid == resource.data.userId;
+      allow delete: if signedInOrPublic() && request.auth.uid == resource.data.userId;
     }
 
     match /channels/{channelId} {
       allow read: if signedInOrPublic();
       allow create: if signedInOrPublic();
       allow update: if signedInOrPublic();
+      allow delete: if signedInOrPublic() && request.auth.uid == resource.data.createdBy;
     }
 
     match /{document=**} {
