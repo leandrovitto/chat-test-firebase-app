@@ -101,7 +101,7 @@ export const deleteChannel = async (channelId: string, userId: string) => {
     .collection("channels")
     .doc(channelId)
     .get();
-  const rule = false; //ch.data()?.createdBy !== userId;
+  const rule = ch.data()?.createdBy !== userId;
 
   if (rule) {
     console.log("You are not the owner of this channel");

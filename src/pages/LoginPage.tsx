@@ -13,7 +13,7 @@ const LoginPage = (_props: Props) => {
 
   useEffect(() => {
     if (user && !loading) {
-      navigate("/dashboard");
+      navigate("/chat");
     }
   }, [user, navigate]);
 

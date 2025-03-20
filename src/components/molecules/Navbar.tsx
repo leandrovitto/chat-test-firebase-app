@@ -14,7 +14,12 @@ import { UserMenu } from "./auth/UserMenu";
 
 const links = [
   { label: "Home", href: "/" },
-  { label: "Dashboard (Private)", href: "/dashboard" },
+  //{ label: "Dashboard (Private)", href: "/dashboard" },
+  //{ label: "Chat (Private)", href: "/chat" },
+];
+
+const privateLinks = [
+  //{ label: "Dashboard (Private)", href: "/dashboard" },
   { label: "Chat (Private)", href: "/chat" },
 ];
 
@@ -28,13 +33,14 @@ const Navbar = () => {
         onClick={() => {
           navigate("/");
         }}
-        className="cursor-pointer"
+        className="flex items-center space-x-2 cursor-pointer"
       >
         <img
           src="https://www.gstatic.com/mobilesdk/240501_mobilesdk/firebase_28dp.png"
           alt="Logo"
           className="h-8"
         />
+        <span className="font-bold">FireChat</span>
       </div>
       <ul className="hidden md:flex items-center gap-10 text-sm">
         {links.map((link, index) => (
@@ -49,6 +55,22 @@ const Navbar = () => {
             </div>
           </li>
         ))}
+        {user && (
+          <>
+            {privateLinks.map((link, index) => (
+              <li key={index}>
+                <div
+                  onClick={() => {
+                    navigate(link.href);
+                  }}
+                  className="cursor-pointer"
+                >
+                  {link.label}
+                </div>
+              </li>
+            ))}
+          </>
+        )}
       </ul>
 
       <div className="flex items-center">

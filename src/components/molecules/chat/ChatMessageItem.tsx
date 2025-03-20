@@ -14,6 +14,7 @@ import { Timestamp } from "firebase/firestore";
 import { Edit2, EllipsisVertical, Save, Trash2Icon, X } from "lucide-react";
 import moment from "moment";
 import { toast } from "sonner";
+import { Textarea } from "@/components/ui/textarea";
 
 const ChatMessageItem = ({
   message,
@@ -114,33 +115,39 @@ const ChatMessageItem = ({
         </div>
         <div className="text-sm py-1">
           {isEditing ? (
-            <div className="flex items-center gap-2">
-              <input
-                type="text"
-                value={editedMessage}
-                onChange={(e) => setEditedMessage(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") {
-                    handleSaveMessage();
-                  }
-                }}
-                className="border border-gray-300 rounded px-2 py-1 w-full"
-              />
-              <button
-                onClick={handleSaveMessage}
-                className="text-blue-500 hover:underline"
-              >
-                <Save size={16} />
-              </button>
-              <button
-                onClick={handleCancelEdit}
-                className="text-gray-500 hover:underline"
-              >
-                <X size={16} />
-              </button>
+            <div>
+              <div className="flex items-center gap-2">
+                <Textarea
+                  value={editedMessage}
+                  onChange={(e) => setEditedMessage(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" && e.ctrlKey) {
+                      handleSaveMessage();
+                    }
+                  }}
+                  className="border border-gray-300 rounded px-2 py-1 w-full"
+                />
+                <button
+                  onClick={handleSaveMessage}
+                  className="text-blue-500 hover:underline"
+                >
+                  <Save size={16} />
+                </button>
+                <button
+                  onClick={handleCancelEdit}
+                  className="text-gray-500 hover:underline"
+                >
+                  <X size={16} />
+                </button>
+              </div>
+              <small>
+                <span className="text-gray-500">
+                  Press ctrlKey + Enter to send
+                </span>
+              </small>
             </div>
           ) : (
-            message.message
+            <div className="whitespace-break-spaces">{message.message}</div>
           )}
         </div>
         <div className="text-xs text-gray-500 text-right">

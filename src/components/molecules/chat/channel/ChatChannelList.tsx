@@ -15,7 +15,6 @@ import {
 } from "@/lib/firebase/firestore/channel.firestore";
 import { AuthContext, AuthContextType } from "@/provider/AuthProvider";
 import { Tooltip } from "@radix-ui/react-tooltip";
-import { channel } from "diagnostics_channel";
 import { HomeIcon, TrashIcon } from "lucide-react";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router";
@@ -39,11 +38,11 @@ const ChatChannelList = (_props: Props) => {
 
   const handleDeleteChannel = (channel: Channel) => {
     if (channel?.id && user?.uid) {
-      if (confirm("Sei sicuro di voler eliminare il canale?")) {
+      if (confirm("Are you sure you want to delete this channel?")) {
         setLoadingDelete(true);
         deleteChannel(channel.id, user.uid)
           .then(() => {
-            setLoadingDelete(false);
+            navigate("/chat");
             console.log("Channel deleted successfully");
             toast("Channel deleted successfully");
           })
@@ -76,7 +75,7 @@ const ChatChannelList = (_props: Props) => {
     return (
       <div className="flex-grow overflow-y-auto">
         <p className="text-gray-500 text-center text-xs p-4">
-          Caricamento canali in corso...
+          Loading channels...
         </p>
       </div>
     );
@@ -85,9 +84,7 @@ const ChatChannelList = (_props: Props) => {
   if (loadingDelete) {
     return (
       <div className="flex-grow overflow-y-auto">
-        <p className="text-gray-500 text-center p-4">
-          Eliminazione in corso...
-        </p>
+        <p className="text-gray-500 text-center p-4">Deleting channel...</p>
       </div>
     );
   }
@@ -129,7 +126,7 @@ const ChatChannelList = (_props: Props) => {
         <SidebarGroupLabel>Canali Pubblici</SidebarGroupLabel>
         <SidebarGroupContent>
           <SidebarMenu>
-            {channels.length === 0 && (
+            {channels.length === 0 && open && (
               <p className="text-gray-500 text-xs p-2">
                 No channels available. Create your first channel!
               </p>

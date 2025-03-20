@@ -9,6 +9,7 @@ import ChatLayout from "./components/layouts/ChatLayout";
 import ChatChannelPage from "./pages/chat/ChatChannelPage";
 import ChatHomePage from "./pages/chat/ChatHomePage";
 import { Toaster } from "./components/ui/sonner";
+import NotFound from "./pages/NotFound";
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
                 </Route>
               </Route>
             </Route>
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
       </AuthProvider>

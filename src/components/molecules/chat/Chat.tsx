@@ -31,6 +31,9 @@ const Chat = () => {
     // Load the channel data
     if (!channelId) return;
 
+    setChannel(null);
+    setMessages([]);
+
     setLoading(true);
     // Fetch channel details
     getChannelById(channelId)

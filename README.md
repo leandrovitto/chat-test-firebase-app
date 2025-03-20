@@ -2,6 +2,8 @@
 
 This is a simple Firebase-based chat application designed to demonstrate real-time communication using Firebase services.
 
+![alt text](public/screen.png "Title")
+
 ## Prerequisites
 
 Before you begin, ensure you have the following installed:
