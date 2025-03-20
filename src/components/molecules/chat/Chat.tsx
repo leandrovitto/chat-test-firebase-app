@@ -55,7 +55,10 @@ const Chat = () => {
     <div>
       <ChatHeader />
       <ChatMessageList />
-      <ChatMessageInput />
+      <ChatMessageInput
+        channelId={channel.id as string}
+        placeholder={`Messaggio in #${channel.name}`}
+      />
     </div>
   );
 };

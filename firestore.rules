@@ -6,6 +6,12 @@ service cloud.firestore {
       return request.auth.uid != null || resource.data.visibility == 'public';
     }
 
+    match /messages/{messageID} {
+      allow read: if signedInOrPublic();
+      allow create: if signedInOrPublic();
+      allow update: if signedInOrPublic();
+    }
+
     match /channels/{channelId} {
       allow read: if signedInOrPublic();
       allow create: if signedInOrPublic();

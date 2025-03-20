@@ -1,7 +1,7 @@
 import { AuthContext, AuthContextType } from "@/provider/AuthProvider";
-import { Loader } from "lucide-react";
 import { useContext, useEffect } from "react";
 import { Outlet, useNavigate } from "react-router";
+import { Loader } from "@/components/molecules/Loader";
 
 type Props = {};
 

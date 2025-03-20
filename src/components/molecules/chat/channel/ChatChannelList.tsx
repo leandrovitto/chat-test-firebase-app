@@ -30,7 +30,7 @@ const ChatChannelList = (_props: Props) => {
 
   const handleChannelSelect = (channel: Channel) => {
     setCurrentChannel(channel);
-    navigate(`/chat/${channel.id}99`); // Navigate to the channel-specific route
+    navigate(`/chat/${channel.id}`); // Navigate to the channel-specific route
   };
 
   // Carica canali
