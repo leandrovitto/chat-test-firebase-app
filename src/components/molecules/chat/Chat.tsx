@@ -9,6 +9,10 @@ import {
 } from "@/lib/firebase/firestore/channel.firestore";
 import { Loader } from "../Loader";
 import { FullMessageWrapped } from "../FullMessageWrapped";
+import {
+  getMessages,
+  Message,
+} from "@/lib/firebase/firestore/message.firestore";
 
 const Chat = () => {
   const params = useParams<{ channelId: string }>();
@@ -16,6 +20,8 @@ const Chat = () => {
 
   const [loading, setLoading] = useState(true);
   const [channel, setChannel] = useState<Channel | null>(null);
+
+  const [messages, setMessages] = useState<Message[]>([]);
 
   if (!channelId) {
     return <div>Select a channel</div>;
@@ -30,13 +36,23 @@ const Chat = () => {
     getChannelById(channelId)
       .then((ch) => {
         setChannel(ch);
-        setLoading(false);
       })
       .catch((err) => {
         console.error(err);
         setChannel(null);
         setLoading(false);
       });
+
+    getMessages(
+      channelId,
+      (m) => {
+        setMessages(m);
+        setLoading(false);
+      },
+      (e) => {
+        setLoading(false);
+      }
+    );
   }, [channelId]);
 
   if (loading) {
@@ -52,12 +68,13 @@ const Chat = () => {
   }
 
   return (
-    <div>
-      <ChatHeader />
-      <ChatMessageList />
+    <div className="flex flex-col h-screen">
+      <ChatHeader channel={channel} />
+      <ChatMessageList messages={messages} />
       <ChatMessageInput
         channelId={channel.id as string}
         placeholder={`Messaggio in #${channel.name}`}
+        disabledComponent={loading}
       />
     </div>
   );

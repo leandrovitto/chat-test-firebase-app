@@ -23,7 +23,8 @@ const MESSAGES_COLLECTION = "messages";
  */
 export const getMessages = (
   channelId: string,
-  callback: (messages: Message[]) => void
+  callback: (messages: Message[]) => void,
+  errorCallback: (error: string) => void
 ) => {
   return firebase
     .firestore()
@@ -40,7 +41,10 @@ export const getMessages = (
         console.log("Messages", messages); // Log the retrieved messages
         callback(messages); // Pass the updated list of messages to the callback
       },
-      (error) => console.error("Error getting messages", error) // Log any errors
+      (error) => {
+        console.error("Error getting messages", error); // Log any errors
+        errorCallback(error.message); // Pass the error message to the error callback
+      }
     );
 };
 

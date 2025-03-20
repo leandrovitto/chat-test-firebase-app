@@ -3,21 +3,23 @@ import { Input } from "@/components/ui/input";
 import { addMessage } from "@/lib/firebase/firestore/message.firestore";
 import { AuthContext, AuthContextType } from "@/provider/AuthProvider";
 import { SendIcon } from "lucide-react";
-import React, { FormEvent, useContext, useState } from "react";
+import React, { FormEvent, use, useContext, useEffect, useState } from "react";
 
 interface ChatMessageInputProps {
   placeholder?: string;
   channelId: string;
+  disabledComponent?: boolean;
 }
 
 const ChatMessageInput = ({
   placeholder = "Scrivi un messaggio...",
   channelId,
+  disabledComponent,
 }: ChatMessageInputProps) => {
   const { user } = useContext(AuthContext) as AuthContextType;
 
   const [messageText, setMessageText] = useState("");
-  const [disabled, setIsDisabled] = useState(false);
+  const [disabled, setIsDisabled] = useState(disabledComponent);
 
   const handleSendMessage = (messageText: string) => {
     if (!user?.uid || !messageText.trim() || !channelId) return;
@@ -48,24 +50,26 @@ const ChatMessageInput = ({
     handleSendMessage(messageText);
   };
 
+  useEffect(() => {
+    setIsDisabled(disabledComponent);
+  }, [disabledComponent]);
+
   return (
-    <div>
-      <form onSubmit={handleSubmit} className="p-4 border-t">
-        <div className="flex gap-2">
-          <Input
-            type="text"
-            value={messageText}
-            onChange={(e) => setMessageText(e.target.value)}
-            placeholder={placeholder}
-            className="flex-grow border rounded-l-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            disabled={disabled}
-          />
-          <Button type="submit" disabled={disabled || !messageText.trim()}>
-            <SendIcon size={24} />
-          </Button>
-        </div>
-      </form>
-    </div>
+    <form onSubmit={handleSubmit} className="p-4 border-t ">
+      <div className="flex gap-2 ">
+        <Input
+          type="text"
+          value={messageText}
+          onChange={(e) => setMessageText(e.target.value)}
+          placeholder={placeholder}
+          className="flex-grow border rounded-l-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          disabled={disabled}
+        />
+        <Button type="submit" disabled={disabled || !messageText.trim()}>
+          <SendIcon size={24} />
+        </Button>
+      </div>
+    </form>
   );
 };
 

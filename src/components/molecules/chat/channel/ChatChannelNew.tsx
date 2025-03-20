@@ -84,7 +84,6 @@ const ChatChannelNew = (_props: Props) => {
           </DialogDescription>
         </DialogHeader>
         <div className="flex flex-col justify-start space-y-4 text-xs">
-          <pre>{JSON.stringify(channel, undefined, 2)}</pre>
           <div>
             <Label
               className="block text-gray-700 text-xs font-bold mb-2"
