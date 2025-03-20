@@ -19,6 +19,7 @@ import { channel } from "diagnostics_channel";
 import { HomeIcon, TrashIcon } from "lucide-react";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router";
+import { toast } from "sonner";
 type Props = {};
 
 const ChatChannelList = (_props: Props) => {
@@ -44,6 +45,7 @@ const ChatChannelList = (_props: Props) => {
           .then(() => {
             setLoadingDelete(false);
             console.log("Channel deleted successfully");
+            toast("Channel deleted successfully");
           })
           .catch((error) => {
             setLoadingDelete(false);

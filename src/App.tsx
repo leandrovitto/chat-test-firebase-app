@@ -8,6 +8,7 @@ import { AuthProvider } from "./provider/AuthProvider";
 import ChatLayout from "./components/layouts/ChatLayout";
 import ChatChannelPage from "./pages/chat/ChatChannelPage";
 import ChatHomePage from "./pages/chat/ChatHomePage";
+import { Toaster } from "./components/ui/sonner";
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
           </Routes>
         </BrowserRouter>
       </AuthProvider>
+      <Toaster />
     </>
   );
 }

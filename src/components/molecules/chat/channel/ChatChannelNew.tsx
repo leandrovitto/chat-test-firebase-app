@@ -19,6 +19,7 @@ import {
   createChannel,
 } from "@/lib/firebase/firestore/channel.firestore";
 import { AuthContext, AuthContextType } from "@/provider/AuthProvider";
+import { toast } from "sonner";
 
 type Props = {};
 
@@ -59,6 +60,7 @@ const ChatChannelNew = (_props: Props) => {
         // Reset form
         setChannel(initChannel);
         setLoading(false);
+        toast("Channel created successfully");
       })
       .catch((error) => {
         console.error("Error creating channel", error);
