@@ -14,10 +14,11 @@ export function ChatChannelSidebar({
 }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar {...props}>
-      <SidebarHeader>List</SidebarHeader>
+      <SidebarHeader>
+        <ChatChannelNew />
+      </SidebarHeader>
       <SidebarContent>
         <ChatChannelList />
-        <ChatChannelNew />
       </SidebarContent>
       <SidebarRail />
     </Sidebar>
