@@ -77,7 +77,14 @@ const ChatMessageItem = ({
               }
               className="size-6 rounded-full"
             />
-            <div className="text-xs text-gray-500">{message.displayName}</div>
+            <div className="text-xs text-gray-500 truncate">
+              {typeof message.displayName === "string" && message.displayName
+                ? message.displayName.substring(0, 10)
+                : "Unknown"}
+              {message.displayName && message.displayName.length > 10
+                ? "..."
+                : ""}
+            </div>
           </div>
           <div>
             {myMessage && (

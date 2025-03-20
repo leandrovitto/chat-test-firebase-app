@@ -85,7 +85,10 @@ const ChatChannelNew = (_props: Props) => {
             Crea un nuovo canale per organizzare le conversazioni
           </DialogDescription>
         </DialogHeader>
-        <div className="flex flex-col justify-start space-y-4 text-xs">
+        <form
+          onSubmit={handleCreateChannel} // Add onSubmit to the form
+          className="flex flex-col justify-start space-y-4 text-xs"
+        >
           <div>
             <Label
               className="block text-gray-700 text-xs font-bold mb-2"
@@ -149,22 +152,19 @@ const ChatChannelNew = (_props: Props) => {
             </p>
           </div>
           <div className="text-red-500 text-xs">{error}</div>
-        </div>
-        <DialogFooter className="sm:justify-between">
-          <DialogClose asChild>
-            <Button type="button" variant="secondary">
+          <div className="flex justify-between space-x-4">
+            <Button
+              type="button"
+              variant="secondary"
+              onClick={() => setIsCreateModalOpen(false)}
+            >
               Close
             </Button>
-          </DialogClose>
-          <Button
-            disabled={loading}
-            type="button"
-            variant="default"
-            onClick={handleCreateChannel}
-          >
-            {loading ? "Creazione in corso..." : "Crea canale"}
-          </Button>
-        </DialogFooter>
+            <Button disabled={loading} type="submit" variant="default">
+              {loading ? "Creazione in corso..." : "Crea canale"}
+            </Button>
+          </div>
+        </form>
       </DialogContent>
     </Dialog>
   );
