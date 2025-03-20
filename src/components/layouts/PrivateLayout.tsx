@@ -10,7 +10,7 @@ const PrivateLayout = (_props: Props) => {
   const { user, loading } = useContext(AuthContext) as AuthContextType;
 
   useEffect(() => {
-    if (!user) {
+    if (!user && !loading) {
       navigate("/login");
     }
   }, [user, navigate]);

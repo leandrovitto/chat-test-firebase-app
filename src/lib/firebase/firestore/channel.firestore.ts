@@ -62,3 +62,25 @@ export const getChannels = (callback: (channels: Channel[]) => void) => {
       (error) => console.error("Error loading channels", error) // Log any errors
     );
 };
+
+/**
+ * Retrieves a single channel document from Firestore by its ID.
+ *
+ * @param channelId - The ID of the channel to retrieve
+ * @returns The channel document with the specified ID
+ */
+export const getChannelById = async (channelId: string): Promise<Channel> => {
+  // Get the channel document by ID
+  const doc = await firebase
+    .firestore()
+    .collection(CHANNELS_COLLECTION)
+    .doc(channelId)
+    .get();
+
+  // Return the channel data if the document exists, otherwise throw an error
+  if (doc.exists) {
+    return { id: doc.id, ...doc.data() } as Channel;
+  } else {
+    throw new Error(`Channel not found with ID: ${channelId}`);
+  }
+};

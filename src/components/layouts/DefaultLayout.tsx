@@ -7,7 +7,7 @@ const DefaultLayout = (_props: Props) => {
   return (
     <div className="w-full">
       <Navbar />
-      <div className="px-4">
+      <div>
         <Outlet />
       </div>
     </div>

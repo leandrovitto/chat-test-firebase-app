@@ -12,7 +12,7 @@ const LoginPage = (_props: Props) => {
   const { user, loading } = useContext(AuthContext) as AuthContextType;
 
   useEffect(() => {
-    if (user) {
+    if (user && !loading) {
       navigate("/dashboard");
     }
   }, [user, navigate]);
