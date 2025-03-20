@@ -5,8 +5,9 @@ import PrivateLayout from "./components/layouts/PrivateLayout";
 import HomePage from "./pages/HomePage";
 import DashboardPage from "./pages/DashboardPage";
 import { AuthProvider } from "./provider/AuthProvider";
-import ChatPage from "./pages/chat/ChatPage";
+import ChatLayout from "./components/layouts/ChatLayout";
 import ChatChannelPage from "./pages/chat/ChatChannelPage";
+import ChatHomePage from "./pages/chat/ChatHomePage";
 
 function App() {
   return (
@@ -19,7 +20,8 @@ function App() {
               <Route index element={<HomePage />} />
               <Route element={<PrivateLayout />}>
                 <Route path="dashboard" element={<DashboardPage />}></Route>
-                <Route path="chat" element={<ChatPage />}>
+                <Route path="chat" element={<ChatLayout />}>
+                  <Route index element={<ChatHomePage />} />
                   <Route
                     path=":channelId"
                     element={<ChatChannelPage />}

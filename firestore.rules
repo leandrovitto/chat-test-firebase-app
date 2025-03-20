@@ -2,17 +2,18 @@ rules_version = '2';
 
 service cloud.firestore {
   match /databases/{database}/documents {
-     match /channels/{channelId} {
-      allow read: if isSignedIn();
-      allow create: if risSignedIn();
-      allow update: if isSignedIn();
+    function signedInOrPublic() {
+      return request.auth.uid != null || resource.data.visibility == 'public';
     }
+
+    match /channels/{channelId} {
+      allow read: if signedInOrPublic();
+      allow create: if signedInOrPublic();
+      allow update: if signedInOrPublic();
+    }
+
     match /{document=**} {
       allow read, write: if false;
     }
-  }
-
-   function isSignedIn() {
-    return request.auth.uid != null
   }
 }

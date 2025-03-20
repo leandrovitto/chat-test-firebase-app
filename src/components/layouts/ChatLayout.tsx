@@ -1,16 +1,16 @@
 import { ChatChannelSidebar } from "@/components/molecules/chat/channel/ChatChannelSidebar";
-import Chat from "@/components/molecules/chat/Chat";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
+import { Outlet } from "react-router";
 
-const ChatPage = () => {
+const ChatLayout = () => {
   return (
     <SidebarProvider>
       <ChatChannelSidebar variant="sidebar" collapsible="icon" />
       <SidebarInset>
-        <Chat />
+        <Outlet />
       </SidebarInset>
     </SidebarProvider>
   );
 };
 
-export default ChatPage;
+export default ChatLayout;

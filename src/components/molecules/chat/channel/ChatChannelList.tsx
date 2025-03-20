@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button";
 import {
   SidebarGroup,
   SidebarGroupContent,
@@ -13,38 +12,16 @@ import {
   Channel,
   getChannels,
 } from "@/lib/firebase/firestore/channel.firestore";
-import { AuthContext, AuthContextType } from "@/provider/AuthProvider";
 import { Tooltip } from "@radix-ui/react-tooltip";
 import { HomeIcon } from "lucide-react";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 type Props = {};
-
-// This is sample data.
-const data = {
-  versions: ["1.0.1", "1.1.0-alpha", "2.0.0-beta1"],
-  navMain: [
-    {
-      title: "Canali Pubblici",
-      url: "#",
-      items: [
-        {
-          title: "Channnel #1",
-          url: "#",
-        },
-        {
-          title: "Channnel #2",
-          url: "#",
-        },
-      ],
-    },
-  ],
-};
 
 const ChatChannelList = (_props: Props) => {
   const navigate = useNavigate(); // Initialize router
   const { open } = useSidebar();
-  const { user } = useContext(AuthContext) as AuthContextType;
+  // const { user } = useContext(AuthContext) as AuthContextType;
 
   const [loading, setLoading] = useState(false);
   const [loadingDelete, _setLoadingDelete] = useState(false);
