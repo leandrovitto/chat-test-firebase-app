@@ -4,21 +4,24 @@ import DefaultLayout from "./components/layouts/DefaultLayout";
 import PrivateLayout from "./components/layouts/PrivateLayout";
 import HomePage from "./pages/HomePage";
 import DashboardPage from "./pages/DashboardPage";
+import { AuthProvider } from "./provider/AuthProvider";
 
 function App() {
   return (
     <>
-      <BrowserRouter>
-        <Routes>
-          <Route path="login" element={<LoginPage />} />
-          <Route element={<DefaultLayout />}>
-            <Route index element={<HomePage />} />
-            <Route element={<PrivateLayout />}>
-              <Route path="dashboard" element={<DashboardPage />}></Route>
+      <AuthProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route path="login" element={<LoginPage />} />
+            <Route element={<DefaultLayout />}>
+              <Route index element={<HomePage />} />
+              <Route element={<PrivateLayout />}>
+                <Route path="dashboard" element={<DashboardPage />}></Route>
+              </Route>
             </Route>
-          </Route>
-        </Routes>
-      </BrowserRouter>
+          </Routes>
+        </BrowserRouter>
+      </AuthProvider>
     </>
   );
 }
