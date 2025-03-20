@@ -21,7 +21,6 @@ const PrivateLayout = (_props: Props) => {
 
   return (
     <div className="">
-      PrivateLayout
       <Outlet />
     </div>
   );
