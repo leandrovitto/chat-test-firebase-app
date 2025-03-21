@@ -118,3 +118,13 @@
     @apply bg-background text-foreground;
   }
 }
+
+.emoji {
+  position: relative;
+
+  .picker {
+    position: absolute;
+    bottom: 50px;
+    left: 0;
+  }
+}

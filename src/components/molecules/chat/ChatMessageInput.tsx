@@ -9,7 +9,7 @@ import {
 import upload from "@/lib/firebase/storage/upload";
 import { AuthContext, AuthContextType } from "@/provider/AuthProvider";
 import clsx from "clsx";
-import { Image, SendIcon } from "lucide-react";
+import { Image, SendIcon, Smile } from "lucide-react";
 import {
   DragEvent,
   FormEvent,
@@ -20,6 +20,7 @@ import {
   useState,
 } from "react";
 import { toast } from "sonner";
+import EmojiPicker from "emoji-picker-react";
 
 interface ChatMessageInputProps {
   placeholder?: string;
@@ -40,6 +41,7 @@ const ChatMessageInput = ({
   const [isDragging, setIsDragging] = useState(false); // State to track drag status
   const [uploadedImages, setUploadedImages] = useState<File[]>([]); // Store uploaded images
   const [uploadProgress, setUploadProgress] = useState<number[]>([]); // Track upload progress for each image
+  const [openEmoji, setOpenEmoji] = useState(false);
   const inputRef = useRef<HTMLTextAreaElement>(null); // Ref for the input field
 
   const formIsValid = messageText.trim() || uploadedImages.length > 0;
@@ -131,6 +133,11 @@ const ChatMessageInput = ({
 
     // Reset the file input value to allow re-selecting the same file
     e.target.value = "";
+  };
+
+  const handleEmoji = (e) => {
+    setMessageText((prev) => prev + e.emoji);
+    setOpenEmoji(false);
   };
 
   const handleDragOver = (
@@ -228,7 +235,7 @@ const ChatMessageInput = ({
             "bg-gray-50 border-dashed border-2 p-4 rounded-xl": isDragging, // Change background color on drag
           })}
         >
-          <div className="flex gap-2 items-center">
+          <div className="flex gap-4 items-center">
             <div>
               <Label htmlFor="file" className="cursor-pointer">
                 <Image size={24} />
@@ -242,6 +249,12 @@ const ChatMessageInput = ({
                 accept="image/*"
                 disabled={disabled}
               />
+            </div>
+            <div className="emoji cursor-pointer">
+              <Smile onClick={() => setOpenEmoji((prev) => !prev)} size={24} />
+              <div className="picker">
+                <EmojiPicker open={openEmoji} onEmojiClick={handleEmoji} />
+              </div>
             </div>
             <Textarea
               ref={inputRef} // Attach the ref to the input field
