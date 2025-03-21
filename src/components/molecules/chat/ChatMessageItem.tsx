@@ -6,15 +6,25 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
+  Attached,
   deleteMessage,
   Message,
   updateMessage,
 } from "@/lib/firebase/firestore/message.firestore";
 import { Timestamp } from "firebase/firestore";
-import { Edit2, EllipsisVertical, Save, Trash2Icon, X } from "lucide-react";
+import {
+  Download,
+  Edit2,
+  EllipsisVertical,
+  Save,
+  Trash2Icon,
+  X,
+} from "lucide-react";
 import moment from "moment";
 import { toast } from "sonner";
 import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/ui/button";
+import download from "@/lib/firebase/storage/download";
 
 const ChatMessageItem = ({
   message,
@@ -29,14 +39,16 @@ const ChatMessageItem = ({
 
   const handleDeleteMessage = () => {
     if (!message.id) return;
-    deleteMessage(message.id)
-      .then(() => {
-        toast("Message deleted successfully.");
-      })
-      .catch((error) => {
-        toast.error("Error deleting message.");
-        console.error("Error deleting message", error);
-      });
+    if (confirm("Are you sure you want to delete this message?")) {
+      deleteMessage(message.id)
+        .then(() => {
+          toast("Message deleted successfully.");
+        })
+        .catch((error) => {
+          toast.error("Error deleting message.");
+          console.error("Error deleting message", error);
+        });
+    }
   };
 
   const handleEditMessage = () => {
@@ -61,9 +73,30 @@ const ChatMessageItem = ({
     setIsEditing(false);
   };
 
+  const handleDownload = (m: Attached) => {
+    download(m.child)
+      .then((url) => {
+        toast.message("Downloading...", {
+          duration: 5000,
+        });
+        // add automatic download
+        const anchor = document.createElement("a");
+        anchor.href = url;
+        anchor.target = "_blank";
+        anchor.download = m.url || "download";
+        anchor.click();
+        anchor.parentNode?.removeChild(anchor);
+      })
+      .catch((error) => {
+        toast.error("Error during download: " + error.message, {
+          duration: 5000,
+        });
+      });
+  };
+
   return (
     <div
-      className={`flex gap-4 px-2 py-1 rounded-lg min-w-xs ${
+      className={`flex gap-4 px-2 py-1 rounded-lg min-w-xs max-w-md ${
         !myMessage ? "bg-gray-100 " : "bg-gray-200"
       }`}
       key={message.id || `${message.userId}-${message.message}`}
@@ -113,7 +146,39 @@ const ChatMessageItem = ({
             )}
           </div>
         </div>
-        <div className="text-sm py-1">
+        <div className="py-1">
+          {message.attached && (
+            <>
+              <div
+                className={`grid grid-cols-${
+                  message.attached.length < 3 ? message.attached.length : 3
+                } gap-2`}
+              >
+                {message.attached?.map((m, idx) => {
+                  if (m.type == "image") {
+                    return (
+                      <div key={idx} className="relative">
+                        <img
+                          className="w-full h-full object-cover rounded-lg"
+                          src={m.url}
+                          width={"250"}
+                        />
+                        <Button
+                          onClick={() => {
+                            handleDownload(m);
+                          }}
+                          className="absolute bottom-2 right-2"
+                        >
+                          <Download className="size-5" />
+                        </Button>
+                      </div>
+                    );
+                  }
+                })}
+              </div>
+            </>
+          )}
+
           {isEditing ? (
             <div>
               <div className="flex items-center gap-2">
@@ -147,7 +212,9 @@ const ChatMessageItem = ({
               </small>
             </div>
           ) : (
-            <div className="whitespace-break-spaces">{message.message}</div>
+            <div className="whitespace-break-spaces text-sm">
+              {message.message}
+            </div>
           )}
         </div>
         <div className="text-xs text-gray-500 text-right">

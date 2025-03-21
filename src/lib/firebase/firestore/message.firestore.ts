@@ -1,5 +1,11 @@
 import { firebase } from "@/lib/firebase/client";
 
+export interface Attached {
+  type: "image" | "video";
+  child: string;
+  url: string;
+}
+
 // Define the structure of a Message document in Firestore
 export interface Message {
   id?: string; // Optional: Firestore document ID
@@ -9,6 +15,7 @@ export interface Message {
   timestamp?: firebase.firestore.FieldValue | firebase.firestore.Timestamp; // Timestamp when the message was sent
   displayName?: string; // Optional: Display name of the user
   photoURL?: string; // Optional: URL of the user's profile photo
+  attached?: Attached[];
 }
 
 // Define a constant for the Firestore collection name

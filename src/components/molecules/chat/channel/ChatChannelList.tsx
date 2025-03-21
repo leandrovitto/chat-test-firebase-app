@@ -42,6 +42,7 @@ const ChatChannelList = (_props: Props) => {
         setLoadingDelete(true);
         deleteChannel(channel.id, user.uid)
           .then(() => {
+            setLoadingDelete(false);
             navigate("/chat");
             console.log("Channel deleted successfully");
             toast("Channel deleted successfully");
