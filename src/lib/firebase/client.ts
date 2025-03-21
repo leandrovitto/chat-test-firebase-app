@@ -17,11 +17,13 @@ const googleProvider = new firebase.auth.GoogleAuthProvider();
 const firebaseFirestore = firebase.firestore();
 const firebaseStorage = firebase.storage();
 const firebaseStorageRef = firebaseStorage.ref();
+const firebaseDatabase = firebase.database();
 
 export {
   firebase,
   firebaseAuth,
   firebaseFirestore,
+  firebaseDatabase,
   firebaseStorage,
   firebaseStorageRef,
   googleProvider,

@@ -10,30 +10,33 @@ import ChatChannelPage from "./pages/chat/ChatChannelPage";
 import ChatHomePage from "./pages/chat/ChatHomePage";
 import { Toaster } from "./components/ui/sonner";
 import NotFound from "./pages/NotFound";
+import { PresenceProvider } from "./provider/PresenceProvider";
 
 function App() {
   return (
     <>
       <AuthProvider>
-        <BrowserRouter>
-          <Routes>
-            <Route path="login" element={<LoginPage />} />
-            <Route element={<DefaultLayout />}>
-              <Route index element={<HomePage />} />
-              <Route element={<PrivateLayout />}>
-                <Route path="dashboard" element={<DashboardPage />}></Route>
-                <Route path="chat" element={<ChatLayout />}>
-                  <Route index element={<ChatHomePage />} />
-                  <Route
-                    path=":channelId"
-                    element={<ChatChannelPage />}
-                  ></Route>
+        <PresenceProvider>
+          <BrowserRouter>
+            <Routes>
+              <Route path="login" element={<LoginPage />} />
+              <Route element={<DefaultLayout />}>
+                <Route index element={<HomePage />} />
+                <Route element={<PrivateLayout />}>
+                  <Route path="dashboard" element={<DashboardPage />}></Route>
+                  <Route path="chat" element={<ChatLayout />}>
+                    <Route index element={<ChatHomePage />} />
+                    <Route
+                      path=":channelId"
+                      element={<ChatChannelPage />}
+                    ></Route>
+                  </Route>
                 </Route>
               </Route>
-            </Route>
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </BrowserRouter>
+        </PresenceProvider>
       </AuthProvider>
       <Toaster />
     </>
