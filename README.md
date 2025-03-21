@@ -4,6 +4,28 @@ This is a simple Firebase-based chat application designed to demonstrate real-ti
 
 ![alt text](public/screen.png "Title")
 
+Features:
+
+##### Add e Delete Channels:
+
+## ![alt text](public/1.png "Title")
+
+##### OnLine Users e Offline Users:
+
+## ![alt text](public/2.png "Title")
+
+##### Edit e Delete Message:
+
+## ![alt text](public/3.png "Title")
+
+##### Emoj:
+
+## ![alt text](public/4.png "Title")
+
+##### Multi-Upload File:
+
+## ![alt text](public/5.png "Title")
+
 ## Prerequisites
 
 Before you begin, ensure you have the following installed:
