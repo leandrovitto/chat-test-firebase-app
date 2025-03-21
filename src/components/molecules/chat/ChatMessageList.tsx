@@ -1,6 +1,6 @@
 import { Message } from "@/lib/firebase/firestore/message.firestore";
 import { AuthContext, AuthContextType } from "@/provider/AuthProvider";
-import { useContext, useEffect, useRef, useState, useCallback } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { FullMessageWrapped } from "../FullMessageWrapped";
 import ChatMessageItem from "./ChatMessageItem";
 

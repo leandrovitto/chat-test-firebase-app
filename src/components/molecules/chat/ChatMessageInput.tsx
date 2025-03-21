@@ -135,7 +135,7 @@ const ChatMessageInput = ({
     e.target.value = "";
   };
 
-  const handleEmoji = (e) => {
+  const handleEmoji = (e: { emoji: string }) => {
     setMessageText((prev) => prev + e.emoji);
     setOpenEmoji(false);
   };

@@ -2,8 +2,6 @@ import { PresenceContext, PresenceUser } from "@/provider/PresenceProvider";
 import moment from "moment";
 import { useContext } from "react";
 
-type Props = {};
-
 const StatusUser = ({ user }: { user: PresenceUser }) => {
   return (
     <div className="flex justify-between items-center border-b mt-1 pb-2">

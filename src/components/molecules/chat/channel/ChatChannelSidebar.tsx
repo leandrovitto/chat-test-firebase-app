@@ -1,6 +1,4 @@
 import * as React from "react";
-import { PresenceContext } from "@/provider/PresenceProvider";
-import { useContext } from "react";
 
 import {
   Sidebar,
@@ -8,9 +6,9 @@ import {
   SidebarHeader,
   SidebarRail,
 } from "@/components/ui/sidebar";
+import ChatStatusUsers from "../ChatStatusUsers";
 import ChatChannelList from "./ChatChannelList";
 import ChatChannelNew from "./ChatChannelNew";
-import ChatStatusUsers from "../ChatStatusUsers";
 
 export function ChatChannelSidebar({
   ...props
