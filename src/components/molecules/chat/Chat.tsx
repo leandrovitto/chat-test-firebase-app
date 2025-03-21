@@ -13,6 +13,7 @@ import {
   getMessages,
   Message,
 } from "@/lib/firebase/firestore/message.firestore";
+import { firebase } from "@/lib/firebase/client";
 
 const Chat = () => {
   const params = useParams<{ channelId: string }>();
@@ -20,26 +21,49 @@ const Chat = () => {
 
   const [loading, setLoading] = useState(true);
   const [channel, setChannel] = useState<Channel | null>(null);
-
   const [messages, setMessages] = useState<Message[]>([]);
+  const [lastMessage, setLastMessage] =
+    useState<firebase.firestore.Timestamp | null>(null);
 
-  if (!channelId) {
-    return <div>Select a channel</div>;
-  }
+  const fetchMoreMessages = async () => {
+    if (!channelId || !lastMessage) return;
+
+    getMessages(
+      channelId,
+      (newMessages) => {
+        if (newMessages.length > 0) {
+          setMessages((prev) => {
+            const uniqueMessages = [
+              ...newMessages
+                .reverse()
+                .filter(
+                  (msg) => !prev.some((prevMsg) => prevMsg.id === msg.id)
+                ),
+              ...prev,
+            ];
+            return uniqueMessages;
+          });
+          setLastMessage(
+            newMessages[0].timestamp as firebase.firestore.Timestamp
+          );
+        } else {
+          setLastMessage(null);
+        }
+      },
+      (error) => console.error(error),
+      lastMessage
+    );
+  };
 
   useEffect(() => {
-    // Load the channel data
     if (!channelId) return;
 
     setChannel(null);
     setMessages([]);
-
     setLoading(true);
-    // Fetch channel details
+
     getChannelById(channelId)
-      .then((ch) => {
-        setChannel(ch);
-      })
+      .then((ch) => setChannel(ch))
       .catch((err) => {
         console.error(err);
         setChannel(null);
@@ -48,11 +72,17 @@ const Chat = () => {
 
     getMessages(
       channelId,
-      (m) => {
-        setMessages(m);
+      (initialMessages) => {
+        setMessages(initialMessages.reverse());
+        if (initialMessages.length > 0) {
+          setLastMessage(
+            initialMessages[0].timestamp as firebase.firestore.Timestamp
+          );
+        }
         setLoading(false);
       },
-      (_e) => {
+      (error) => {
+        console.error(error);
         setLoading(false);
       }
     );
@@ -73,7 +103,11 @@ const Chat = () => {
   return (
     <div className="flex flex-col h-screen">
       <ChatHeader channel={channel} />
-      <ChatMessageList messages={messages} />
+      <ChatMessageList
+        messages={messages}
+        fetchMoreMessages={fetchMoreMessages}
+        last={!lastMessage}
+      />
       <ChatMessageInput
         channelId={channel.id as string}
         placeholder={`Messaggio in #${channel.name}`}

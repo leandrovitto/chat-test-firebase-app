@@ -23,36 +23,45 @@ export const MESSAGES_COLLECTION = "messages";
 
 /**
  * Subscribes to the list of messages for a specific channel in Firestore and listens for real-time updates.
+ * Supports pagination with a limit of 10 messages per batch.
  *
  * @param channelId - The ID of the channel to retrieve messages for
  * @param callback - A function to handle the updated list of messages
+ * @param errorCallback - A function to handle errors
+ * @param startAfter - The last message's timestamp to start fetching the next batch
  * @returns A Firestore unsubscribe function to stop listening for updates
  */
 export const getMessages = (
   channelId: string,
   callback: (messages: Message[]) => void,
-  errorCallback: (error: string) => void
+  errorCallback: (error: string) => void,
+  startAfter?: firebase.firestore.Timestamp
 ) => {
-  return firebase
+  let query = firebase
     .firestore()
     .collection(MESSAGES_COLLECTION)
     .where("channelId", "==", channelId) // Filter messages by channel ID
-    .orderBy("timestamp", "asc") // Order messages by timestamp in ascending order
-    .limit(50) // Limit the number of messages retrieved to 50 - TODO:paginate this
-    .onSnapshot(
-      (snapshot) => {
-        // Map Firestore documents to Message objects
-        const messages = snapshot.docs.map(
-          (doc) => ({ id: doc.id, ...doc.data() } as Message)
-        );
-        console.log("Messages", messages); // Log the retrieved messages
-        callback(messages); // Pass the updated list of messages to the callback
-      },
-      (error) => {
-        console.error("Error getting messages", error); // Log any errors
-        errorCallback(error.message); // Pass the error message to the error callback
-      }
-    );
+    .orderBy("timestamp", "desc") // Order messages by timestamp in ascending order
+    .limit(10); // Limit the number of messages retrieved to 10
+
+  if (startAfter) {
+    query = query.startAfter(startAfter); // Start fetching after the given timestamp
+  }
+
+  return query.onSnapshot(
+    (snapshot) => {
+      // Map Firestore documents to Message objects
+      const messages = snapshot.docs.map(
+        (doc) => ({ id: doc.id, ...doc.data() } as Message)
+      );
+      console.log("Messages", messages); // Log the retrieved messages
+      callback(messages); // Pass the updated list of messages to the callback
+    },
+    (error) => {
+      console.error("Error getting messages", error); // Log any errors
+      errorCallback(error.message); // Pass the error message to the error callback
+    }
+  );
 };
 
 /**
