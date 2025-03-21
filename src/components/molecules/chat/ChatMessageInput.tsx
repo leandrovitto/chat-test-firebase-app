@@ -260,7 +260,9 @@ const ChatMessageInput = ({
       </div>
 
       <small>
-        <span className="text-gray-500">Press ctrlKey + Enter to send</span>
+        <span className="text-gray-500">
+          Press ctrlKey + Enter to send | Max 3 Files / Limit size 1Mb{" "}
+        </span>
       </small>
     </form>
   );
