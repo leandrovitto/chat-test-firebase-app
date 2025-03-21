@@ -13,7 +13,7 @@ const PrivateLayout = (_props: Props) => {
     if (!user && !loading) {
       navigate("/login");
     }
-  }, [user, navigate]);
+  }, [user, navigate, loading]);
 
   if (loading) {
     return <Loader />;

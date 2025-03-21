@@ -38,7 +38,7 @@ const ChatChannelNew = (_props: Props) => {
 
   const validateForm = () => {
     if (channel.name.length < 3) {
-      setError("Il nome del canale deve essere di almeno 3 caratteri");
+      setError("Channel name must be at least 3 characters long");
       return false;
     }
     return true;
@@ -62,7 +62,7 @@ const ChatChannelNew = (_props: Props) => {
       })
       .catch((error) => {
         console.error("Error creating channel", error);
-        setError("Errore nella creazione del canale" + error.message);
+        setError("Error creating channel: " + error.message);
         setLoading(false);
       });
   };
@@ -78,9 +78,9 @@ const ChatChannelNew = (_props: Props) => {
       </DialogTrigger>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>Crea nuovo canale</DialogTitle>
+          <DialogTitle>Create a new channel</DialogTitle>
           <DialogDescription>
-            Crea un nuovo canale per organizzare le conversazioni
+            Create a new channel to organize conversations
           </DialogDescription>
         </DialogHeader>
         <form
@@ -92,7 +92,7 @@ const ChatChannelNew = (_props: Props) => {
               className="block text-gray-700 text-xs font-bold mb-2"
               htmlFor="channelName"
             >
-              Nome canale *
+              Channel name *
             </Label>
             <Input
               id="channelName"
@@ -104,7 +104,7 @@ const ChatChannelNew = (_props: Props) => {
                   name: e.target.value,
                 })
               }
-              placeholder="es. generale"
+              placeholder="es. general"
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               required
             />
@@ -114,7 +114,7 @@ const ChatChannelNew = (_props: Props) => {
               className="block text-gray-700 text-xs font-bold mb-2"
               htmlFor="channelDescription"
             >
-              Descrizione (opzionale)
+              Description (optional)
             </Label>
             <textarea
               id="channelDescription"
@@ -125,7 +125,7 @@ const ChatChannelNew = (_props: Props) => {
                   description: e.target.value,
                 })
               }
-              placeholder="Di cosa si parla in questo canale?"
+              placeholder="es. A place for general discussions"
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               rows={3}
             />
@@ -143,10 +143,10 @@ const ChatChannelNew = (_props: Props) => {
                 }
                 className="mr-2"
               />
-              <span className="text-xs">Canale pubblico</span>
+              <span className="text-xs">Public channel</span>
             </label>
             <p className="text-gray-600 text-xs mt-1">
-              I canali pubblici sono visibili a tutti gli utenti
+              Pubblic channels are visible to all users
             </p>
           </div>
           <div className="text-red-500 text-xs">{error}</div>
@@ -159,7 +159,7 @@ const ChatChannelNew = (_props: Props) => {
               Close
             </Button>
             <Button disabled={loading} type="submit" variant="default">
-              {loading ? "Creazione in corso..." : "Crea canale"}
+              {loading ? "Loading..." : "Create channel"}
             </Button>
           </div>
         </form>

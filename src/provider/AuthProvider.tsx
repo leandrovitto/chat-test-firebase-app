@@ -41,7 +41,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
   };
 
   const setPersistence = () => {
-    firebaseAuth.setPersistence(firebase.auth.Auth.Persistence.SESSION);
+    firebaseAuth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
   };
 
   const handleLoginWithGoogle = () => {
