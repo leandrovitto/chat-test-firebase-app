@@ -1,4 +1,4 @@
-import { firebase } from "@/lib/firebase/client";
+import { firebase, firebaseFirestore } from "@/lib/firebase/client";
 
 export interface Attached {
   type: "image" | "video";
@@ -37,8 +37,7 @@ export const getMessages = (
   errorCallback: (error: string) => void,
   startAfter?: firebase.firestore.Timestamp
 ) => {
-  let query = firebase
-    .firestore()
+  let query = firebaseFirestore
     .collection(MESSAGES_COLLECTION)
     .where("channelId", "==", channelId) // Filter messages by channel ID
     .orderBy("timestamp", "desc") // Order messages by timestamp in ascending order
@@ -75,7 +74,7 @@ export const addMessage = (message: Message) => {
     ...message,
     timestamp: firebase.firestore.FieldValue.serverTimestamp(), // Use Firestore server timestamp
   };
-  return firebase.firestore().collection(MESSAGES_COLLECTION).add(msg); // Add the message to the Firestore collection
+  return firebaseFirestore.collection(MESSAGES_COLLECTION).add(msg); // Add the message to the Firestore collection
 };
 
 /**
@@ -89,8 +88,7 @@ export const updateMessage = (
   messageId: string,
   updatedData: Partial<Message>
 ) => {
-  return firebase
-    .firestore()
+  return firebaseFirestore
     .collection(MESSAGES_COLLECTION)
     .doc(messageId)
     .update(updatedData); // Update the message document with the new data
@@ -103,8 +101,7 @@ export const updateMessage = (
  * @returns A Promise that resolves when the message is successfully deleted
  */
 export const deleteMessage = (messageId: string) => {
-  return firebase
-    .firestore()
+  return firebaseFirestore
     .collection(MESSAGES_COLLECTION)
     .doc(messageId)
     .delete(); // Delete the message document
@@ -117,8 +114,7 @@ export const deleteMessage = (messageId: string) => {
  * @returns A Promise that resolves with the message data if found
  */
 export const getMessageById = async (messageId: string): Promise<Message> => {
-  const doc = await firebase
-    .firestore()
+  const doc = await firebaseFirestore
     .collection(MESSAGES_COLLECTION)
     .doc(messageId)
     .get(); // Get the message document by ID

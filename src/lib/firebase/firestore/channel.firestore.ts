@@ -1,4 +1,8 @@
-import { firebase, firebaseStorageRef } from "@/lib/firebase/client";
+import {
+  firebase,
+  firebaseFirestore,
+  firebaseStorageRef,
+} from "@/lib/firebase/client";
 import { MESSAGES_COLLECTION } from "./message.firestore";
 
 // Define the structure of a Channel document in Firestore
@@ -34,8 +38,7 @@ export const createChannel = async (
   };
 
   // Add the channel to the Firestore collection and return the document ID
-  const docRef = await firebase
-    .firestore()
+  const docRef = await firebaseFirestore
     .collection(CHANNELS_COLLECTION)
     .add(ch);
   return docRef.id;
@@ -48,8 +51,7 @@ export const createChannel = async (
  * @returns A Firestore unsubscribe function to stop listening for updates
  */
 export const getChannels = (callback: (channels: Channel[]) => void) => {
-  return firebase
-    .firestore()
+  return firebaseFirestore
     .collection(CHANNELS_COLLECTION)
     .orderBy("createdAt", "asc") // Order channels by creation time in ascending order
     .onSnapshot(
@@ -72,8 +74,7 @@ export const getChannels = (callback: (channels: Channel[]) => void) => {
  */
 export const getChannelById = async (channelId: string): Promise<Channel> => {
   // Get the channel document by ID
-  const doc = await firebase
-    .firestore()
+  const doc = await firebaseFirestore
     .collection(CHANNELS_COLLECTION)
     .doc(channelId)
     .get();
@@ -97,8 +98,7 @@ export const getChannelById = async (channelId: string): Promise<Channel> => {
  *
  */
 export const deleteChannel = async (channelId: string, userId: string) => {
-  const ch = await firebase
-    .firestore()
+  const ch = await firebaseFirestore
     .collection(CHANNELS_COLLECTION)
     .doc(channelId)
     .get();
@@ -113,7 +113,7 @@ export const deleteChannel = async (channelId: string, userId: string) => {
   const storageRef = firebaseStorageRef.child(`uploads/${channelId}`);
   await deleteStorageDirectory(storageRef);
 
-  const db = firebase.firestore();
+  const db = firebaseFirestore;
   const batch = db.batch();
   // Optimize Firestore message deletions using batch
   const messagesSnapshot = await db

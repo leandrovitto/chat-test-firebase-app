@@ -14,14 +14,14 @@ export const firebaseApp =
 const firebaseAuth = firebase.auth();
 const googleProvider = new firebase.auth.GoogleAuthProvider();
 
-const firebaseDb = firebase.firestore();
+const firebaseFirestore = firebase.firestore();
 const firebaseStorage = firebase.storage();
 const firebaseStorageRef = firebaseStorage.ref();
 
 export {
   firebase,
   firebaseAuth,
-  firebaseDb,
+  firebaseFirestore,
   firebaseStorage,
   firebaseStorageRef,
   googleProvider,
