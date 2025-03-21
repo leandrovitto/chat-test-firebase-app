@@ -10,7 +10,7 @@ const upload = async (
 
   const randomId = Math.random().toString(36).substring(2, 15);
   const fileName = `${date.getTime()}-${randomId}`;
-  const child = `uploads/${_uid}/${_directory}/${fileName}`;
+  const child = `uploads/${_directory}/${_uid}/${fileName}`;
   // Create the file metadata
   var metadata = {
     contentType: "image/jpeg",

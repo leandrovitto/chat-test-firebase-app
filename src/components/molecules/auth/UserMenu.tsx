@@ -33,6 +33,9 @@ export const UserMenu = () => {
             <p className="block px-1 py-1 text-xs text-gray-500 data-focus:bg-gray-100 data-focus:outline-hidden">
               {user.email}
             </p>
+            <p className="block px-1 py-1 text-xs text-gray-200 data-focus:bg-gray-100 data-focus:outline-hidden">
+              {user.uid}
+            </p>
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={() => navigate("/dashboard")}>

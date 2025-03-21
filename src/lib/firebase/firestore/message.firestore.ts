@@ -19,7 +19,7 @@ export interface Message {
 }
 
 // Define a constant for the Firestore collection name
-const MESSAGES_COLLECTION = "messages";
+export const MESSAGES_COLLECTION = "messages";
 
 /**
  * Subscribes to the list of messages for a specific channel in Firestore and listens for real-time updates.

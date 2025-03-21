@@ -1,4 +1,5 @@
-import { firebase } from "@/lib/firebase/client";
+import { firebase, firebaseStorageRef } from "@/lib/firebase/client";
+import { MESSAGES_COLLECTION } from "./message.firestore";
 
 // Define the structure of a Channel document in Firestore
 export interface Channel {
@@ -98,7 +99,7 @@ export const getChannelById = async (channelId: string): Promise<Channel> => {
 export const deleteChannel = async (channelId: string, userId: string) => {
   const ch = await firebase
     .firestore()
-    .collection("channels")
+    .collection(CHANNELS_COLLECTION)
     .doc(channelId)
     .get();
   const rule = ch.data()?.createdBy !== userId;
@@ -107,16 +108,60 @@ export const deleteChannel = async (channelId: string, userId: string) => {
     console.log("You are not the owner of this channel");
     return;
   }
-  //remove all messages
-  await firebase
-    .firestore()
-    .collection("messages")
+
+  // Delete associated storage directory
+  const storageRef = firebaseStorageRef.child(`uploads/${channelId}`);
+  await deleteStorageDirectory(storageRef);
+
+  const db = firebase.firestore();
+  const batch = db.batch();
+  // Optimize Firestore message deletions using batch
+  const messagesSnapshot = await db
+    .collection(MESSAGES_COLLECTION)
     .where("channelId", "==", channelId)
-    .get()
-    .then((querySnapshot) => {
-      querySnapshot.forEach((doc) => {
-        doc.ref.delete();
-      });
+    .get();
+
+  messagesSnapshot.forEach((doc) => {
+    batch.delete(doc.ref);
+  });
+
+  // Commit the batch operation
+  await batch.commit();
+
+  // Delete the channel document
+  await db.collection(CHANNELS_COLLECTION).doc(channelId).delete();
+
+  console.log(
+    `Channel ${channelId} and its associated data have been deleted.`
+  );
+};
+
+// Helper function to delete a storage directory
+const deleteStorageDirectory = async (
+  directoryRef: firebase.storage.Reference
+) => {
+  try {
+    const listResult = await directoryRef.listAll();
+    const deletePromises: any[] = [];
+
+    // Delete all files in the directory
+    listResult.items.forEach((fileRef) => {
+      deletePromises.push(fileRef.delete());
     });
-  await firebase.firestore().collection("channels").doc(channelId).delete();
+
+    // Recursively delete subdirectories
+    listResult.prefixes.forEach((subDirRef) => {
+      deletePromises.push(deleteStorageDirectory(subDirRef));
+    });
+
+    await Promise.all(deletePromises);
+    console.log(
+      `Storage directory ${directoryRef.fullPath} deleted successfully.`
+    );
+  } catch (error) {
+    console.error(
+      `Error deleting storage directory ${directoryRef.fullPath}:`,
+      error
+    );
+  }
 };

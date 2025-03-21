@@ -6,11 +6,18 @@ rules_version = '2';
 service firebase.storage {
   match /b/{bucket}/o {
 
-     // Allow write access to the specific file path
-    match /uploads/{userId}/{imageId=**} {
-      allow read: if request.auth.uid == userId; // Allow only authenticated users to write
-      allow write: if request.auth.uid == userId; // Allow only authenticated users to write
-      allow delete: if request.auth.uid == userId; // Allow only authenticated users to write
+    // Allow authenticated users to read, write, and delete their own files
+    match /uploads/{channelId}/{userId}/{imageId=**} {
+      allow read, write, delete: if request.auth != null && request.auth.uid == userId;
+    }
+
+    // Allow admins to manage all files in a channel
+    match /uploads/{channelId}/{allPaths=**} {
+      allow read, write, delete: if request.auth != null && request.auth.uid == firestore.get(/databases/(default)/documents/channels/$(channelId)).data.createdBy;
+    }
+
+    match /uploads/{channelId} {
+      allow read, write, delete: if request.auth != null && request.auth.uid == firestore.get(/databases/(default)/documents/channels/$(channelId)).data.createdBy;
     }
 
     match /{allPaths=**} {
