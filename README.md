@@ -2,9 +2,26 @@
 
 This is a simple Firebase-based chat application designed to demonstrate real-time communication using Firebase services.
 
+[Demo Link](https://chat-test-firebase-app.web.app)
+
+
+
 ![alt text](public/screen.png "Title")
 
 Features:
+
+### AI Features
+
+##### Generate Text with selected prompt:
+
+## ![alt text](public/AI_1.gif "Title")
+
+##### Re-Write selected text:
+
+## ![alt text](public/AI_2.gif "Title")
+---
+
+### APP Features
 
 ##### Add e Delete Channels:
 

@@ -6,7 +6,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { MessageSquare, Users, Zap } from "lucide-react";
+import { GithubIcon, MessageSquare, Users, Zap } from "lucide-react";
 
 type Props = {};
 
@@ -17,13 +17,21 @@ const HomePage = (_props: Props) => {
         <div className="px-4 md:px-6 ">
           <div className="flex flex-col items-center justify-center space-y-4 text-center ">
             <div className="space-y-2 text-center">
-              <img
-                src="https://www.gstatic.com/mobilesdk/240501_mobilesdk/firebase_28dp.png"
-                alt="Logo"
-                className="h-12 text-center mx-auto"
-              />
+              <div className="flex w-20 h-16 mx-auto">
+                <img
+                  src="firebase.png"
+                  alt="Logo"
+                  className="h-12 text-center mx-auto"
+                />
+                <img
+                  src="vertex.png"
+                  alt="Logo"
+                  className="h-12 text-center mx-auto"
+                />
+              </div>
+              
               <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl">
-                Real-time Chat Testing Made Simple
+                Real-time Chat Testing APP + Vertex AI
               </h1>
               <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl">
                 Experiment with Firebase-powered chat functionality in a clean,
@@ -31,10 +39,10 @@ const HomePage = (_props: Props) => {
               </p>
             </div>
             <div className="flex flex-col sm:flex-row gap-4">
-              <a href="/login">
+              <a href="https://github.com/leandrovitto/chat-test-firebase-app" target="_blank">
                 <Button size="lg" className="gap-1">
-                  <Zap className="h-4 w-4" />
-                  Try Demo
+                  <GithubIcon className="h-4 w-4" />
+                  Source Code
                 </Button>
               </a>
               <a href="/login">
@@ -47,16 +55,35 @@ const HomePage = (_props: Props) => {
         </div>
       </section>
 
-      <div className="">
-        <img
-          src="/screen.png"
-          alt="Chat"
-          className="mx-auto max-w-7xl border-2 rounded-2xl my-8"
-          width={"50%"}
-        />
+      <div className="flex flex-col md:flex-row justify-center px-16 py-8 gap-4">
+        <div className="w-12/12 md:w-1/2">
+          <div className="text-center font-bold">Generate Text with selected prompt</div>
+          <img
+            src="screen.png"
+            alt="Chat"
+            className="mx-auto max-w-7xl border-2 rounded-2xl my-8"
+            width={"100%"}
+          />
+        </div>
+        <div className="w-12/12 md:w-1/2">
+          <div className="text-center font-bold">Generate Text with selected prompt</div>
+          <img
+            src="AI_1.gif"
+            alt="Chat"
+            className="mx-auto max-w-7xl border-2 rounded-2xl my-8"
+            width={"100%"}
+          />       
+          <div className="text-center font-bold">Re-Write selected text</div> 
+          <img
+            src="AI_2.gif"
+            alt="Chat"
+            className="mx-auto max-w-7xl border-2 rounded-2xl my-8"
+            width={"100%"}
+          />
+        </div>
       </div>
 
-      <section className="w-full py-12 md:py-24 lg:py-32">
+      <section className="w-full py-12">
         <div className=" px-4 md:px-6 mx-auto max-w-7xl">
           <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
             <Card>
