@@ -9,6 +9,7 @@ const config = {
     .VITE_PUBLIC_FIREBASE_MESSAGING_SENDER_ID as string,
   appId: process.env.VITE_PUBLIC_FIREBASE_APP_ID as string,
   databaseURL: process.env.VITE_PUBLIC_FIREBASE_DATABASE_URL as string,
+  reCAPTCHAKey: process.env.VITE_PUBLIC_RECAPTCHA_KEY as string,
 };
 
 // When deployed, there are quotes that need to be stripped

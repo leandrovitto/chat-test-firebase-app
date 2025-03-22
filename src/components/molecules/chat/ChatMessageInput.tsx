@@ -1,7 +1,13 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { Textarea } from "@/components/ui/textarea";
+import { getGenerativeModel, vertexAI } from "@/lib/firebase/client";
 import {
   addMessage,
   Message,
@@ -9,7 +15,8 @@ import {
 import upload from "@/lib/firebase/storage/upload";
 import { AuthContext, AuthContextType } from "@/provider/AuthProvider";
 import clsx from "clsx";
-import { Image, SendIcon, Smile } from "lucide-react";
+import EmojiPicker from "emoji-picker-react";
+import { Image, SendIcon, Smile, Sparkle } from "lucide-react";
 import {
   DragEvent,
   FormEvent,
@@ -20,7 +27,6 @@ import {
   useState,
 } from "react";
 import { toast } from "sonner";
-import EmojiPicker from "emoji-picker-react";
 
 interface ChatMessageInputProps {
   placeholder?: string;
@@ -46,6 +52,106 @@ const ChatMessageInput = ({
 
   const formIsValid = messageText.trim() || uploadedImages.length > 0;
   const isDisabled = disabled || !formIsValid;
+
+  const [menuOptions] = useState([
+    { label: "Generate Text with AI", action: "ai" },
+    { label: "Rewrite selected text with AI", action: "ai-rewrite" },
+  ]);
+
+  const generateWithAI = async (init: string, end: string, prompt: string) => {
+    setIsDisabled(true);
+    // Provide a prompt that contains text
+    //const prompt = "Write a small random phrase.Max 10 words.";
+    const model = getGenerativeModel(vertexAI, {
+      model: "gemini-2.0-flash",
+      generationConfig: {
+        maxOutputTokens: 50,
+      },
+    });
+    // To generate text output, call generateContent with the text input
+    const result = await model.generateContentStream(prompt);
+
+    let output = "";
+    for await (const chunk of result.stream) {
+      const chunkText = chunk.text();
+      output += chunkText;
+      setMessageText(init + output + end);
+    }
+    setIsDisabled(false);
+  };
+
+  const rewriteWithAI = async (prompt: string) => {
+    setIsDisabled(true);
+    // Provide a prompt that contains text
+    //const prompt = "Write a small random phrase.Max 10 words.";
+    const model = getGenerativeModel(vertexAI, {
+      model: "gemini-2.0-flash",
+      systemInstruction:
+        "Rewrite the following text in a more formal tone.Max 10 words.",
+      generationConfig: {
+        maxOutputTokens: 50,
+      },
+    });
+    // To generate text output, call generateContent with the text input
+    const result = await model.generateContent(prompt);
+
+    const response = result.response;
+    const text = response.text();
+    setIsDisabled(false);
+    return text;
+  };
+
+  const handleMenuSelect = async (action: string) => {
+    if (!inputRef.current) return;
+
+    const textarea = inputRef.current;
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const selectedText = messageText.substring(start, end);
+
+    if (!selectedText) return;
+
+    const initPart = messageText.substring(0, start);
+    const endPart = messageText.substring(end);
+
+    let newText = "";
+
+    let formattedText = "";
+    switch (action) {
+      case "ai":
+        await generateWithAI(initPart, endPart, selectedText);
+        break;
+      case "ai-rewrite":
+        formattedText = await rewriteWithAI(selectedText);
+        newText = initPart + formattedText + endPart;
+        setMessageText(newText);
+        break;
+      case "bold":
+        formattedText = `**${selectedText || "bold text"}**`;
+        newText = initPart + formattedText + endPart;
+        setMessageText(newText);
+        break;
+      case "underline":
+        formattedText = `<u>${selectedText || "underline text"}</u>`;
+        newText = initPart + formattedText + endPart;
+        setMessageText(newText);
+        break;
+      default:
+        return;
+    }
+
+    // Restore focus and selection without delay
+    textarea.focus();
+    textarea.setSelectionRange(start, end);
+    /*  // Restore focus and selection
+    setTimeout(() => {
+      textarea.focus();
+      textarea.setSelectionRange(
+        start + formattedText.length,
+        start + formattedText.length
+      );
+    }, 0); */
+  };
 
   const handleSendMessage = async (messageText: string) => {
     if (!user?.uid || !channelId) return;
@@ -256,6 +362,24 @@ const ChatMessageInput = ({
                 <EmojiPicker open={openEmoji} onEmojiClick={handleEmoji} />
               </div>
             </div>
+            <Popover>
+              <PopoverTrigger asChild>
+                <Sparkle size={24} />
+              </PopoverTrigger>
+              <PopoverContent className="w-56 bg-white shadow-lg rounded">
+                <ul>
+                  {menuOptions.map((option) => (
+                    <li
+                      key={option.action}
+                      className="cursor-pointer p-2 hover:bg-gray-100"
+                      onClick={() => handleMenuSelect(option.action)}
+                    >
+                      {option.label}
+                    </li>
+                  ))}
+                </ul>
+              </PopoverContent>
+            </Popover>
             <Textarea
               ref={inputRef} // Attach the ref to the input field
               value={messageText}
@@ -265,6 +389,7 @@ const ChatMessageInput = ({
               className="flex-grow border rounded-l-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
               disabled={disabled}
             />
+
             <Button type="submit" disabled={isDisabled}>
               <SendIcon size={24} />
             </Button>
