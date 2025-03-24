@@ -1,6 +1,6 @@
 import { Message } from "@/lib/firebase/firestore/message.firestore";
-import { AuthContext, AuthContextType } from "@/provider/AuthProvider";
-import { useContext, useEffect, useRef, useState } from "react";
+import { useAuth } from "@/provider/AuthProvider";
+import { useEffect, useRef, useState } from "react";
 import { FullMessageWrapped } from "../FullMessageWrapped";
 import ChatMessageItem from "./ChatMessageItem";
 
@@ -15,7 +15,7 @@ const ChatMessageList = ({
   fetchMoreMessages,
   last,
 }: ChatMessageListProps) => {
-  const { user } = useContext(AuthContext) as AuthContextType;
+  const { user } = useAuth();
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null); // Ref for the scroll container
   const [isFetching, setIsFetching] = useState(false);

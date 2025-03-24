@@ -1,6 +1,12 @@
 // AuthProvider.js
 import { UserInfo } from "firebase/auth";
-import { createContext, SetStateAction, useEffect, useState } from "react";
+import {
+  createContext,
+  SetStateAction,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { firebaseAuth, googleProvider, firebase } from "@/lib/firebase/client";
 
 interface AuthContextType {
@@ -96,6 +102,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged();
     setPersistence();
+
     return () => {
       unsubscribe();
     };
@@ -114,6 +121,8 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
     <AuthContext.Provider value={authValue}>{children}</AuthContext.Provider>
   );
 };
+
+export const useAuth = () => useContext(AuthContext) as AuthContextType;
 
 export { AuthContext, AuthProvider };
 export type { AuthContextType };

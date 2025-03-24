@@ -1,13 +1,13 @@
-import { AuthContext, AuthContextType } from "@/provider/AuthProvider";
-import { useContext, useEffect } from "react";
-import { Outlet, useNavigate } from "react-router";
 import { Loader } from "@/components/molecules/Loader";
+import { useAuth } from "@/provider/AuthProvider";
+import { useEffect } from "react";
+import { Outlet, useNavigate } from "react-router";
 
 type Props = {};
 
 const PrivateLayout = (_props: Props) => {
   const navigate = useNavigate();
-  const { user, loading } = useContext(AuthContext) as AuthContextType;
+  const { user, loading } = useAuth();
 
   useEffect(() => {
     if (!user && !loading) {

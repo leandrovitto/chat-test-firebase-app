@@ -15,14 +15,14 @@ import {
   Channel,
   createChannel,
 } from "@/lib/firebase/firestore/channel.firestore";
-import { AuthContext, AuthContextType } from "@/provider/AuthProvider";
-import { FormEvent, useContext, useState } from "react";
+import { useAuth } from "@/provider/AuthProvider";
+import { FormEvent, useState } from "react";
 import { toast } from "sonner";
 
 type Props = {};
 
 const ChatChannelNew = (_props: Props) => {
-  const { user } = useContext(AuthContext) as AuthContextType;
+  const { user } = useAuth();
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);

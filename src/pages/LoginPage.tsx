@@ -1,15 +1,15 @@
 import { LoginForm } from "@/components/molecules/auth/LoginForm";
 import { Loader } from "@/components/molecules/Loader";
-import { AuthContext, AuthContextType } from "@/provider/AuthProvider";
+import { useAuth } from "@/provider/AuthProvider";
 
-import { useContext, useEffect } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router";
 
 type Props = {};
 
 const LoginPage = (_props: Props) => {
   const navigate = useNavigate();
-  const { user, loading } = useContext(AuthContext) as AuthContextType;
+  const { user, loading } = useAuth();
 
   useEffect(() => {
     if (user && !loading) {

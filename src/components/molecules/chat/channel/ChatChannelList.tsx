@@ -13,10 +13,10 @@ import {
   deleteChannel,
   getChannels,
 } from "@/lib/firebase/firestore/channel.firestore";
-import { AuthContext, AuthContextType } from "@/provider/AuthProvider";
+import { useAuth } from "@/provider/AuthProvider";
 import { Tooltip } from "@radix-ui/react-tooltip";
 import { HomeIcon, TrashIcon } from "lucide-react";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { toast } from "sonner";
 type Props = {};
@@ -24,7 +24,7 @@ type Props = {};
 const ChatChannelList = (_props: Props) => {
   const navigate = useNavigate(); // Initialize router
   const { open } = useSidebar();
-  const { user } = useContext(AuthContext) as AuthContextType;
+  const { user } = useAuth();
 
   const [loading, setLoading] = useState(false);
   const [loadingDelete, setLoadingDelete] = useState(false);

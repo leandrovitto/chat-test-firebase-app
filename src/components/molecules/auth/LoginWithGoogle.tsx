@@ -1,9 +1,8 @@
-import { useContext } from "react";
-import { AuthContext, AuthContextType } from "@/provider/AuthProvider";
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/provider/AuthProvider";
 
 const LoginWithGoogle = () => {
-  const { handleLoginWithGoogle } = useContext(AuthContext) as AuthContextType;
+  const { handleLoginWithGoogle } = useAuth();
 
   return (
     <Button

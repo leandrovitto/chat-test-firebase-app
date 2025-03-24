@@ -7,9 +7,8 @@ import {
 import { Menu } from "lucide-react";
 // import ThemeToggle from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/provider/AuthProvider";
 import { useNavigate } from "react-router";
-import { AuthContext, AuthContextType } from "@/provider/AuthProvider";
-import { useContext } from "react";
 import { UserMenu } from "./auth/UserMenu";
 
 const links = [
@@ -25,7 +24,7 @@ const privateLinks = [
 
 const Navbar = () => {
   const navigate = useNavigate();
-  const { user } = useContext(AuthContext) as AuthContextType;
+  const { user } = useAuth();
 
   return (
     <div className="w-full flex justify-between items-center p-2 max-w-7xl mx-auto border-b border-gray-200">

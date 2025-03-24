@@ -6,13 +6,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { AuthContext, AuthContextType } from "@/provider/AuthProvider";
-import { useContext } from "react";
+import { useAuth } from "@/provider/AuthProvider";
 import { useNavigate } from "react-router";
 
 export const UserMenu = () => {
   const navigate = useNavigate();
-  const { user, handleLogout } = useContext(AuthContext) as AuthContextType;
+  const { user, handleLogout } = useAuth();
 
   if (!user) {
     return null;

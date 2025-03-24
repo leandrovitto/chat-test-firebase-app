@@ -1,12 +1,6 @@
-import {
-  createContext,
-  useEffect,
-  useState,
-  ReactNode,
-  useContext,
-} from "react";
 import { firebase, firebaseDatabase } from "@/lib/firebase/client";
-import { AuthContext, AuthContextType } from "./AuthProvider";
+import { createContext, ReactNode, useEffect, useState } from "react";
+import { useAuth } from "./AuthProvider";
 
 export interface PresenceUser {
   state: string;
@@ -26,7 +20,7 @@ export const PresenceContext = createContext<PresenceContextType>({
 });
 
 export const PresenceProvider = ({ children }: { children: ReactNode }) => {
-  const { user, loading } = useContext(AuthContext) as AuthContextType;
+  const { user, loading } = useAuth();
   const [onlineUsers, setOnlineUsers] = useState<PresenceUser[]>([]);
   const [offLineUsers, setOfflineUsers] = useState<PresenceUser[]>([]);
 

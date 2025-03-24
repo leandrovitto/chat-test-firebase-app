@@ -13,7 +13,7 @@ import {
   Message,
 } from "@/lib/firebase/firestore/message.firestore";
 import upload from "@/lib/firebase/storage/upload";
-import { AuthContext, AuthContextType } from "@/provider/AuthProvider";
+import { useAuth } from "@/provider/AuthProvider";
 import clsx from "clsx";
 import EmojiPicker from "emoji-picker-react";
 import { Image, SendIcon, Smile, Sparkle } from "lucide-react";
@@ -21,7 +21,6 @@ import {
   DragEvent,
   FormEvent,
   KeyboardEvent,
-  useContext,
   useEffect,
   useRef,
   useState,
@@ -39,7 +38,7 @@ const ChatMessageInput = ({
   channelId,
   disabledComponent,
 }: ChatMessageInputProps) => {
-  const { user } = useContext(AuthContext) as AuthContextType;
+  const { user } = useAuth();
 
   const LIMIT_FILES = 3;
   const [messageText, setMessageText] = useState("");
